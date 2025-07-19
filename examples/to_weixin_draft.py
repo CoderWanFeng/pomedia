@@ -16,14 +16,24 @@ from PIL import Image
 urllib3.disable_warnings()
 
 
-def create_post_content():
+def create_post_content(post_details):
     """
-    定义微信公众号图文消息模板
+    定义微信公众号图文消息模板（这里举一个电影资料正文排版的例子）
     """
     centent_part = f"""\
-这里是正文部分，支持html标签，这里根据自己的业务来定义。
-正文部分。
-正文部分。
+<p>
+<span style="color: #000000;">◎片　　名　{post_details.get('film_name')}</span><br>\
+<span style="color: #000000;">◎年　　代　{post_details.get('year')}</span><br>\
+<span style="color: #000000;">◎产　　地　{post_details.get('country')}</span><br>\
+<span style="color: #000000;">◎类　　别　{post_details.get('category').strip('/').replace('/', ' / ')}</span><br>\
+<span style="color: #000000;">◎上映日期　{post_details.get('release_date')}</span><br>\
+<span style="color: #000000;">◎豆瓣链接　<a href="https://movie.douban.com/subject/{post_details.get('douban_id')}/" target="_blank">{post_details.get('douban_id')}</a></span><br>\
+<span style="color: #000000;">◎导　　演　{'，'.join([director for director in post_details.get('directors')])}</span><br>\
+<span style="color: #000000;">◎主　　演　{'，'.join([actor for actor in post_details.get('actors')])}</span><br>\
+</p>
+<p><span style="color: #000000;">◎简　　介</span></p>
+<p><span style="color: #000000;">　　{post_details.get('intro')}</span></p>
+<p><span style="color: #000000;">◎喜欢电影就点个关注吧。留言有惊喜哦！◎</span></p>
 """
     return centent_part
 
@@ -39,8 +49,8 @@ class ToWeixinDraft:
         """
             获取公众号权限
             """
-        APPID = 'wxa024d68de9e64a9a'
-        APPSECRET = '6de2f01dbae7f370407cc94223f2c88c'
+        APPID = '你的公众号appid，从公众号后台获取'
+        APPSECRET = '你的公众号appsecret，从公众号后台获取'
         access_token_resp = requests.get(
             f'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}')
         json_obj = json.loads(access_token_resp.text)
@@ -53,7 +63,7 @@ class ToWeixinDraft:
     def pack_articles(self):
         # 1 获取本次发布的所有文章的title, img_url, content, tags, intro, digest
         wx_title = f"你的文章标题"
-        intro = f"你的文章正文内容"  # create_post_content()
+        intro = create_post_content(post_details)
         # 摘要，取前100个字符
         digest = intro[:100]
         img_url = f"网络上的图片链接地址"
