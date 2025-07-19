@@ -1,0 +1,29 @@
+<!-- 仅保留核心内容区域 -->
+<!-- 替换到create_post_content()函数里 -->
+<div class="article-content">
+    <div style="text-align: center; padding: 30px 0; background: linear-gradient(135deg, #007BFF, #0056b3); color: white; border-radius: 10px; margin-bottom: 25px;">
+        <h1 style="font-size: 2.2em; margin: 0; font-weight: 700; letter-spacing: 2px;">{{文章标题}}</h1>
+        <div style="color: rgba(255,255,255,0.8); font-size: 0.9em; margin-top: 10px;">
+            <span>发布时间：{{发布日期}}</span> 
+            <span>阅读时长：{{阅读时长}}分钟</span>
+        </div>
+    </div>
+
+    <div style="background: white; padding: 25px; border-radius: 8px; margin: 20px 0;">
+        <p>{{导语段落}}</p>
+
+        <h2 style="color: #007BFF; font-size: 1.5em; border-left: 4px solid #007BFF; padding-left: 15px; margin: 20px 0;">{{小标题1}}</h2>
+        <div style="text-align: center; margin: 25px 0;">
+            <img src="{{图片链接1}}" alt="{{图片描述1}}" style="width: 100%; max-width: 600px; border-radius: 8px;">
+            <div style="color: #666; font-size: 0.9em;">{{图片说明1}}</div>
+        </div>
+
+        <p>{{正文段落1}} <span style="color: #007BFF; font-weight: 500;">{{重点词1}}</span> {{正文段落2}}</p>
+
+        <h2 style="color: #007BFF; font-size: 1.5em; border-left: 4px solid #007BFF; padding-left: 15px; margin: 20px 0;">{{小标题2}}</h2>
+        <div style="text-align: center; margin: 25px 0;">
+            <img src="{{图片链接2}}" alt="{{图片描述2}}" style="width: 100%; max-width: 600px; border-radius: 8px;">
+            <div style="color: #666; font-size: 007BFF;">{{图片说明2}}</div>
+        </div>
+    </div>
+</div>
