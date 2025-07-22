@@ -166,6 +166,45 @@ class ToWeixinDraft:
         }
         return articles_dict
 
+
+    # 4 构造多图文消息体的articles部分
+    def create_post_dict(self):
+        """
+        接口请求说明
+        http
+        请求方式：POST（请使用https协议）https://api.weixin.qq.com/cgi-bin/draft/add?access_token=ACCESS_TOKEN
+
+        调用示例
+        {
+            "articles": [
+                {
+                    "title": TITLE,
+                    "author": AUTHOR,
+                    "digest": DIGEST,
+                    "content": CONTENT,
+                    "content_source_url": CONTENT_SOURCE_URL,
+                    "thumb_media_id": THUMB_MEDIA_ID,
+                    "show_cover_pic": 1,
+                    "need_open_comment": 0,
+                    "only_fans_can_comment": 0
+                }
+                // 若新增的是多图文素材，则此处应还有几段articles结构
+        ]
+        }
+        """
+
+        articles_dict = {
+            "title": "wx_title",
+            "author": '',
+            "digest": "digest",
+            "content": "wx_content",
+            "show_cover_pic": 1,
+            "need_open_comment": 0,
+            "only_fans_can_comment": 1,
+            "thumb_media_id": "wx_fm_img_id"
+        }
+        return articles_dict
+
     # post到公众号草稿箱
     def upd_post2cgx(self, data):
         url = 'https://api.weixin.qq.com/cgi-bin/draft/add?access_token=' + self.wx_access_token
@@ -186,7 +225,7 @@ def do_job():
         # 先实例化上传到微信公众号的类
         do_weixin_draft = ToWeixinDraft()
         # 组织文章内容
-        data = do_weixin_draft.pack_articles()
+        data = do_weixin_draft.create_post_dict()
         # 上传到微信公众号草稿箱
         res_msg = do_weixin_draft.upd_post2cgx(data)
         n = 1
