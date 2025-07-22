@@ -12,6 +12,9 @@ import requests
 import schedule
 import urllib3
 from PIL import Image
+from loguru import logger
+
+from examples.config import APPID, APPSECRET
 
 urllib3.disable_warnings()
 
@@ -33,19 +36,19 @@ def create_post_content():
 # ======================================
 class ToWeixinDraft:
     def __init__(self):
+        self.app_id = APPID
+        self.app_secret = APPSECRET
         self.wx_access_token = self.get_access_token()
 
     def get_access_token(self):
         """
-            获取公众号权限
-            """
-        APPID = 'wxa024d68de9e64a9a'
-        APPSECRET = '6de2f01dbae7f370407cc94223f2c88c'
+        获取公众号权限
+        """
         access_token_resp = requests.get(
-            f'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid={APPID}&secret={APPSECRET}')
+            f'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&app_id={self.app_id}&secret={self.app_secret}')
         json_obj = json.loads(access_token_resp.text)
         access_token = json_obj.get('access_token')
-        print(f"access_token: {access_token}")
+        logger.info(f"access_token: {access_token}")
 
         return access_token
 
@@ -82,7 +85,7 @@ class ToWeixinDraft:
         # 构造多图文消息articles结构
         wx_content = wx_content_header
         articles_dict = self.create_post_dict(wx_title, digest, wx_content, wx_fm_img_id)
-        # print(articles_lst)
+        # logger.info(articles_lst)
         return articles_dict
 
     # 2 上传封面图片到微信公众号，并返回封面图片id
@@ -110,7 +113,7 @@ class ToWeixinDraft:
             'media': (img_file_name, open(save_path, 'rb'), 'image/jpeg')}
         vx_res = requests.post(url=url, files=request_file)
         obj = json.loads(vx_res.content)
-        print(obj)
+        logger.info(obj)
         return obj['media_id']
 
     # 3 上传正文图片到微信公众号，并返回正文图片网址
@@ -123,7 +126,7 @@ class ToWeixinDraft:
         }
         vx_res = requests.post(url=vx_img_url, files=request_file, data=data)
         obj = json.loads(vx_res.content)
-        print(obj)
+        logger.info(obj)
         return obj['url']
 
     # 4 构造多图文消息体的articles部分
@@ -168,12 +171,12 @@ class ToWeixinDraft:
         url = 'https://api.weixin.qq.com/cgi-bin/draft/add?access_token=' + self.wx_access_token
         vx_res = requests.post(url=url, data=json.dumps(data, ensure_ascii=False).encode("utf-8"))
         res_obj = json.loads(vx_res.content)
-        print(res_obj)
+        logger.info(res_obj)
         if 'errmsg' in res_obj:
-            print("公众号上传失败。")
+            logger.error("公众号上传失败。")
             return False
         else:
-            print("公众号上传成功。")
+            logger.warning("公众号上传成功。")
             return True
 
 
@@ -193,10 +196,10 @@ def do_job():
             n += 1
             time.sleep(159)
             if n == 3:
-                print('公众号发布尝试3次失败，退出。')
+                logger.error('公众号发布尝试3次失败，退出。')
                 break
     except Exception as e:
-        print(e)
+        logger.error(e)
 
 
 if __name__ == '__main__':
