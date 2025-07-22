@@ -166,7 +166,6 @@ class ToWeixinDraft:
         }
         return articles_dict
 
-
     # 4 构造多图文消息体的articles部分
     def create_post_dict(self):
         """
@@ -245,10 +244,11 @@ if __name__ == '__main__':
     # 部署情况
     # schedule.every(10).minutes.do(do_job)  # 部署每10分钟执行一次do_job()函数的任务
     # schedule.every().hour.do(do_job)  # 部署每×小时执行一次do_job()函数的任务
-    schedule.every().day.at("10:30").do(do_job)  # 部署在每天的10:30执行do_job()函数的任务
-    # schedule.every().monday.do(do_job)  # 部署每个星期一执行do_job()函数的任务
-    # schedule.every().wednesday.at("13:15").do(do_job)  # 部署每周三的13：15执行函数的任务
-
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
+    # schedule.every().day.at("10:30").do(do_job)  # 部署在每天的10:30执行do_job()函数的任务
+    # # schedule.every().monday.do(do_job)  # 部署每个星期一执行do_job()函数的任务
+    # # schedule.every().wednesday.at("13:15").do(do_job)  # 部署每周三的13：15执行函数的任务
+    #
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(1)
+    do_job()
