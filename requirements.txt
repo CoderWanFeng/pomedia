@@ -1,0 +1,6 @@
+loguru==0.7.3
+lxml==6.0.0
+Pillow==11.3.0
+Requests==2.32.4
+schedule==1.2.2
+urllib3==2.5.0
